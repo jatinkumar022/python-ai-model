@@ -1,0 +1,32 @@
+
+pip install -r requirements.txt
+
+
+python main.py start --model lama --port 8080
+
+cuda / cpu 
+args::::::::::::
+Interactive Segmentation::::::::::::
+      --enable-interactive-seg --interactive-seg-model=sam2_base  --interactive-seg-device=cuda
+
+
+GFPGAN::::::::::::::::
+      pip install gfpgan
+      --enable-gfpgan --gfpgan-device cuda
+      
+////////////// This works only on face Otherwise it wont work and in other things it wont effect ////////////////////////
+
+RealESRGAN::::::::::::
+      pip install realesrgan
+      --enable-realesrgan --realesrgan-model RealESRGAN_x4plus --realesrgan-device cuda
+
+Remove Background:::::::::
+        pip install rembg
+        --enable-remove-bg
+    
+RestoreFormer:::::::
+        pip install realesrgan
+        --enable-restoreformer --restoreformer-device cuda
+
+All in one :::::::::::
+python main.py start --model lama --port 8080 --enable-gfpgan --gfpgan-device cpu  --enable-realesrgan --realesrgan-model RealESRGAN_x4plus --realesrgan-device cpu --enable-remove-bg

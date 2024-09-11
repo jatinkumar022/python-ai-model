@@ -1,19 +1,18 @@
-import { PlayIcon } from "@radix-ui/react-icons"
-import { useState } from "react"
-import { IconButton, ImageUploadButton } from "@/components/ui/button"
-import Shortcuts from "@/components/Shortcuts"
-import { useImage } from "@/hooks/useImage"
+import { PlayIcon } from "@radix-ui/react-icons";
+import { useState } from "react";
+import { IconButton, ImageUploadButton } from "@/components/ui/button";
+import Shortcuts from "@/components/Shortcuts";
+import { useImage } from "@/hooks/useImage";
 
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
-import PromptInput from "./PromptInput"
-import { RotateCw, Image, Upload } from "lucide-react"
-import FileManager, { MASK_TAB } from "./FileManager"
-import { getMediaBlob, getMediaFile } from "@/lib/api"
-import { useStore } from "@/lib/states"
-import SettingsDialog from "./Settings"
-import { cn, fileToImage } from "@/lib/utils"
-import Coffee from "./Coffee"
-import { useToast } from "./ui/use-toast"
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import PromptInput from "./PromptInput";
+import { RotateCw, Image, Upload } from "lucide-react";
+import FileManager, { MASK_TAB } from "./FileManager";
+import { getMediaBlob, getMediaFile } from "@/lib/api";
+import { useStore } from "@/lib/states";
+import SettingsDialog from "./Settings";
+import { cn, fileToImage } from "@/lib/utils";
+import { useToast } from "./ui/use-toast";
 
 const Header = () => {
   const [
@@ -48,41 +47,41 @@ const Header = () => {
     state.imageHeight,
     state.imageWidth,
     state.handleFileManagerMaskSelect,
-  ])
+  ]);
 
-  const { toast } = useToast()
-  const [maskImage, maskImageLoaded] = useImage(customMask)
-  const [openMaskPopover, setOpenMaskPopover] = useState(false)
+  const { toast } = useToast();
+  const [maskImage, maskImageLoaded] = useImage(customMask);
+  const [openMaskPopover, setOpenMaskPopover] = useState(false);
 
   const handleRerunLastMask = () => {
-    runInpainting()
-  }
+    runInpainting();
+  };
 
   const onRerunMouseEnter = () => {
-    showPrevMask()
-  }
+    showPrevMask();
+  };
 
   const onRerunMouseLeave = () => {
-    hidePrevMask()
-  }
+    hidePrevMask();
+  };
 
   const handleOnPhotoClick = async (tab: string, filename: string) => {
     try {
       if (tab === MASK_TAB) {
-        const maskBlob = await getMediaBlob(tab, filename)
-        handleFileManagerMaskSelect(maskBlob)
+        const maskBlob = await getMediaBlob(tab, filename);
+        handleFileManagerMaskSelect(maskBlob);
       } else {
-        const newFile = await getMediaFile(tab, filename)
-        setFile(newFile)
+        const newFile = await getMediaFile(tab, filename);
+        setFile(newFile);
       }
     } catch (e: any) {
       toast({
         variant: "destructive",
         description: e.message ? e.message : e.toString(),
-      })
-      return
+      });
+      return;
     }
-  }
+  };
 
   return (
     <header className="h-[60px] px-6 py-4 absolute top-[0] flex justify-between items-center w-full z-20 border-b backdrop-filter backdrop-blur-md bg-background/70">
@@ -97,7 +96,7 @@ const Header = () => {
           disabled={isInpainting}
           tooltip="Upload image"
           onFileUpload={(file) => {
-            setFile(file)
+            setFile(file);
           }}
         >
           <Image />
@@ -113,15 +112,15 @@ const Header = () => {
             disabled={isInpainting}
             tooltip="Upload custom mask"
             onFileUpload={async (file) => {
-              let newCustomMask: HTMLImageElement | null = null
+              let newCustomMask: HTMLImageElement | null = null;
               try {
-                newCustomMask = await fileToImage(file)
+                newCustomMask = await fileToImage(file);
               } catch (e: any) {
                 toast({
                   variant: "destructive",
                   description: e.message ? e.message : e.toString(),
-                })
-                return
+                });
+                return;
               }
               if (
                 newCustomMask.naturalHeight !== imageHeight ||
@@ -130,13 +129,13 @@ const Header = () => {
                 toast({
                   variant: "destructive",
                   description: `The size of the mask must same as image: ${imageWidth}x${imageHeight}`,
-                })
-                return
+                });
+                return;
               }
 
-              setCustomFile(file)
+              setCustomFile(file);
               if (!runMannually) {
-                runInpainting()
+                runInpainting();
               }
             }}
           >
@@ -193,12 +192,11 @@ const Header = () => {
       {model.need_prompt ? <PromptInput /> : <></>}
 
       <div className="flex gap-1">
-        <Coffee />
         <Shortcuts />
         {serverConfig.disableModelSwitch ? <></> : <SettingsDialog />}
       </div>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
