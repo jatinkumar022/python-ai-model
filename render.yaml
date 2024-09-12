@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: IOpaint
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python main.py start --model lama --port 8080 --enable-gfpgan --gfpgan-device cpu --enable-realesrgan --realesrgan-model RealESRGAN_x4plus --realesrgan-device cpu --enable-remove-bg
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: RENDER_PYTHON_VERSION
+        value: 3.9 # Or your desired Python version
+    plan: free # Use a paid plan if the project is resource-intensive
